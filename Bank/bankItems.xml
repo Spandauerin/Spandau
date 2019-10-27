@@ -1,0 +1,191 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
+    <Script file="gui.lua"/>
+    <Frame name="BankCharBackground" parent="GuildInfoFrame" enableMouse="true" movable="true">
+        <Size x="600" y="424"/>
+        <Anchors>
+            <Anchor point="LEFT" relativePoint="RIGHT" x="2" y="0"/>
+        </Anchors>
+        <Layers>
+            <Layer level="BACKGROUND" textureSubLevel="-1">
+                <Texture parentKey="Bg" file="Interface\FrameGeneral\UI-Background-Marble" horizTile="true" vertTile="true">
+                    <Anchors>
+                        <Anchor point="TOPLEFT" x="2" y="-21"/>
+                        <Anchor point="BOTTOMRIGHT" x="-2" y="2"/>
+                    </Anchors>
+                </Texture>
+                <Texture parentKey="TitleBg" inherits="_UI-Frame-TitleTileBg">
+                    <Anchors>
+                        <Anchor point="TOPLEFT" x="2" y="-1"/>
+                        <Anchor point="TOPRIGHT" x="-25" y="-1"/>
+                    </Anchors>
+                </Texture>
+            </Layer>
+            <Layer level="BACKGROUND">
+                <Texture parentKey="TopTileStreaks" inherits="_UI-Frame-TopTileStreaks">
+                    <Anchors>
+                        <Anchor point="TOPLEFT" x="0" y="-21"/>
+                        <Anchor point="TOPRIGHT" x="-2" y="-21"/>
+                    </Anchors>
+                </Texture>
+            </Layer>
+            <Layer level="OVERLAY">
+                <Texture parentKey="TopLeftCorner" inherits="UI-Frame-TopLeftCorner">
+                    <Anchors>
+                        <Anchor point="TOPLEFT" x="-6" y="1"/>
+                    </Anchors>
+                </Texture>
+                <Texture parentKey="TopRightCorner" inherits="UI-Frame-TopCornerRight">
+                    <Anchors>
+                        <Anchor point="TOPRIGHT" x="0" y="1"/>
+                    </Anchors>
+                </Texture>
+                <Texture parentKey="TopBorder" inherits="_UI-Frame-TitleTile">
+                    <Anchors>
+                        <Anchor point="TOPLEFT" relativeKey="$parent.TopLeftCorner" relativePoint="TOPRIGHT"/>
+                        <Anchor point="TOPRIGHT" relativeKey="$parent.TopRightCorner" relativePoint="TOPLEFT"/>
+                    </Anchors>
+                </Texture>
+                <FontString name="BANK_FRAME_TEXT" parentKey="TitleText" inherits="GameFontNormal" text="Guild Bank Char">
+                    <Anchors>
+                        <Anchor point="TOP" x="-6" y="-4" />
+                    </Anchors>
+                </FontString>
+            </Layer>
+            <Layer level="BORDER">
+                <Texture parentKey="BotLeftCorner" inherits="UI-Frame-BotCornerLeft">
+                    <Anchors>
+                        <Anchor point="BOTTOMLEFT" x="-6" y="-5"/>
+                    </Anchors>
+                </Texture>
+                <Texture parentKey="BotRightCorner" inherits="UI-Frame-BotCornerRight">
+                    <Anchors>
+                        <Anchor point="BOTTOMRIGHT" x="0" y="-5"/>
+                    </Anchors>
+                </Texture>
+                <Texture parentKey="BottomBorder" inherits="_UI-Frame-Bot">
+                    <Anchors>
+                        <Anchor point="BOTTOMLEFT" relativeKey="$parent.BotLeftCorner" relativePoint="BOTTOMRIGHT" y="0"/>
+                        <Anchor point="BOTTOMRIGHT" relativeKey="$parent.BotRightCorner" relativePoint="BOTTOMLEFT" y="0"/>
+                    </Anchors>
+                </Texture>
+                <Texture parentKey="LeftBorder" inherits="!UI-Frame-LeftTile">
+                    <Anchors>
+                        <Anchor point="TOPLEFT" relativeKey="$parent.TopLeftCorner" relativePoint="BOTTOMLEFT"/>
+                        <Anchor point="BOTTOMLEFT" relativeKey="$parent.BotLeftCorner" relativePoint="TOPLEFT"/>
+                    </Anchors>
+                </Texture>
+                <Texture parentKey="RightBorder" inherits="!UI-Frame-RightTile">
+                    <Anchors>
+                        <Anchor point="TOPRIGHT" relativeKey="$parent.TopRightCorner" relativePoint="BOTTOMRIGHT" x="1"/>
+                        <Anchor point="BOTTOMRIGHT" relativeKey="$parent.BotRightCorner" relativePoint="TOPRIGHT"/>
+                    </Anchors>
+                </Texture>
+            </Layer>
+        </Layers>
+        <Frames>
+            <Button parentKey="CloseButton" inherits="UIPanelCloseButton">
+                <Anchors>
+                    <Anchor point="TOPRIGHT" relativePoint="TOPRIGHT">
+                        <Offset x="4" y="5"/>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick>
+                        refreshData();
+                        changePage();
+                    </OnClick>
+                </Scripts>
+                <NormalTexture file="Interface\Buttons\UI-RotationRight-Button-Up"/>
+                <PushedTexture file="Interface\Buttons\UI-RotationRight-Button-Down"/>
+            </Button>
+            <Frame name="ItemFrame" hidden="false">
+                <Anchors>
+                    <Anchor point="TOPLEFT">
+                        <Offset x="4" y="-24"/>
+                    </Anchor>
+                    <Anchor point="BOTTOMRIGHT">
+                        <Offset x="-4" y="24"/>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnShow>
+                        createButtons();
+                        refreshData();
+                        changePage();
+                    </OnShow>
+                </Scripts>
+            </Frame>
+            <Frame name="PageOrientation">
+                <Size x="80" y="20"/>
+                <Anchors>
+                    <Anchor point="BOTTOM" relativePoint="BOTTOM" relativeTo="ItemFrame"/>
+                </Anchors>
+                <Layers>
+                    <Layer level="ARTWORK">
+                        <FontString name="PageText" inherits="GameFontNormalSmall" text="?">
+                            <FontHeight>
+                                <AbsValue val="60"/>
+                            </FontHeight>
+                            <Anchors>
+                                <Anchor point="TOP" relativePoint="CENTER"/>
+                            </Anchors>
+                        </FontString>
+                    </Layer>
+                </Layers>
+
+                <Frames>
+                    <Button name="PrevButton" inherits="UIPanelCloseButton" disabled="true">
+                        <Anchors>
+                            <Anchor point="TOPLEFT" relativePoint="TOPLEFT">
+                            </Anchor>
+                        </Anchors>
+                        <Scripts>
+                            <OnClick>
+                                prevPage();
+                            </OnClick>
+                        </Scripts>
+                        <NormalTexture file="Interface\Buttons\UI-SpellbookIcon-PrevPage-Up"/>
+                        <PushedTexture file="Interface\Buttons\UI-SpellbookIcon-PrevPage-Down"/>
+                        <DisabledTexture file="Interface\Buttons\UI-SpellbookIcon-PrevPage-Disabled"/>
+                    </Button>
+                    <Button name="NextButton" inherits="UIPanelCloseButton">
+                        <Anchors>
+                            <Anchor point="TOPRIGHT" relativePoint="TOPRIGHT">
+                            </Anchor>
+                        </Anchors>
+                        <Scripts>
+                            <OnClick>
+                                nextPage();
+                            </OnClick>
+                        </Scripts>
+                        <NormalTexture file="Interface\Buttons\UI-SpellbookIcon-NextPage-Up"/>
+                        <PushedTexture file="Interface\Buttons\UI-SpellbookIcon-NextPage-Down"/>
+                        <DisabledTexture file="Interface\Buttons\UI-SpellbookIcon-NextPage-Disabled"/>
+                    </Button>
+                </Frames>
+            </Frame>
+
+            <Frame name="MoneyFrame">
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativePoint="BOTTOM" relativeTo="ItemFrame">
+                        <Offset x="0" y="0"/>
+                    </Anchor>
+                    <Anchor point="BOTTOMRIGHT" relativeTo="BankCharBackground">
+                        <Offset x="-20" y="0"/>
+                    </Anchor>
+                </Anchors>
+                <Layers>
+                    <Layer level="ARTWORK">
+                        <FontString justifyH="RIGHT" justifyV="TOP" name="MoneyString" inherits="GameFontNormalSmall" text="?">
+                        </FontString>
+                        <Anchors>
+                            <Anchor point="CENTER"></Anchor>
+                        </Anchors>
+                    </Layer>
+                </Layers>
+            </Frame>
+        </Frames>
+
+    </Frame>
+
+</Ui>

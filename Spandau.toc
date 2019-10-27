@@ -1,0 +1,12 @@
+## Interface: 11302
+## Title: Spandau
+## Author: Spandauerin
+## Version: 0.1
+## SavedVariables: SpandauDB
+
+embeds.xml
+Core.lua
+confs.lua
+comm.lua
+DeathList\deathList.xml
+Bank\bank.xml
