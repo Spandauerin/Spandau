@@ -13,11 +13,11 @@ local function getMessageType(msg)
     end
 
     if string.match(msg, Spandau.confs.messageType.DeathListEntry .. Spandau.confs.delimiterType) then
-        return Spandau.confs.messageType.DeathListEntry
+        return Spandau.confs.messageType.DeathListEntry, string.gsub(msg, Spandau.confs.messageType.DeathListEntry.. Spandau.confs.delimiterType, "")
     elseif string.match(msg, Spandau.confs.messageType.DeathListRequest .. Spandau.confs.delimiterType) then
-        return Spandau.confs.messageType.DeathListRequest
+        return Spandau.confs.messageType.DeathListRequest, string.gsub(msg, Spandau.confs.messageType.DeathListRequest.. Spandau.confs.delimiterType, "")
     elseif string.match(msg, Spandau.confs.messageType.BankChar.. Spandau.confs.delimiterType) then
-        return Spandau.confs.messageType.BankCharItem
+        return Spandau.confs.messageType.BankCharItem, string.gsub(msg, Spandau.confs.messageType.BankChar.. Spandau.confs.delimiterType, "")
     else
         return nil
     end
@@ -35,7 +35,7 @@ end
 
 function Spandau:OnCommReceived(pref,msg,typ,user,...)
 
-    local messageType = getMessageType(msg)
+    local messageType, clearedMessage = getMessageType(msg)
     if not messageType then
         do return end
     end
@@ -50,8 +50,8 @@ function Spandau:OnCommReceived(pref,msg,typ,user,...)
             Spandau:broadcastNewPlayerDeathlist(entry)
         end
     elseif messageType == Spandau.confs.messageType.BankChar then
-        local entry = Utils:stringToBankItemChar(msg)
-        SPA.DB.BANKCHARS:addItemToBankChar(entry)
+        local entries = Utils:stringToBankItemChar(clearedMessage)
+        --SPA.DB.BANKCHARS:addItemToBankChar(entry)
     else
         local messageSplitted = split(msg,Spandau.confs.delimiterType)
         if typ == "GUILD" and messageSplitted[1] ==  "DeathList" then

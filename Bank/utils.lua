@@ -20,7 +20,6 @@ end
 
 function Utils:bankItemCharToString(bankItems,player)
     local bankString = ""
-
     for _, entry in pairs(bankItems) do
         bankString = bankString .. Spandau.confs.delimiterType .. entry.count .. Spandau.confs.delimiterVariables .. entry.itemID
     end
